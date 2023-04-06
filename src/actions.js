@@ -7,20 +7,25 @@ export const bugAdded = (description) => ({
   },
 });
 
-// export function bugAdded(description) {
+export const bugRemoved = (id) => ({
+  type: actions.BUG_REMOVED,
+  payload: {
+    id: id,
+  },
+});
+
+export const bugResolved = (id) => ({
+  type: actions.BUG_RESOLVED,
+  payload: {
+    id: id,
+  },
+});
+
+// export function bugRemoved(id) {
 //   return {
-//     type: actions.BUG_ADDED,
+//     type: actions.BUG_REMOVED,
 //     payload: {
-//       description: description,
+//       id: id,
 //     },
 //   };
 // }
-
-export function bugRemoved(id) {
-  return {
-    type: actions.BUG_REMOVED,
-    payload: {
-      id: id,
-    },
-  };
-}
