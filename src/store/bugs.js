@@ -1,14 +1,51 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, createReducer, createSlice } from "@reduxjs/toolkit";
+
+let lastId = 0;
+
+const slice = createSlice({
+  name: "bugs",
+  initialState: [],
+  reducers: {
+    bugAdded: (bugs, action) => {
+      bugs.push({
+        id: ++lastId,
+        description: action.payload.description,
+        resolved: false,
+      });
+    },
+
+    bugResolved: (bugs, action) => {
+      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
+      bugs[index].resolved = true;
+    },
+
+    bugUpdated: (bugs, action) => {
+      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
+      bugs[index].updated = true;
+    },
+
+    bugRemoved: (bugs, action) => {
+      bugs.pop((bug) => bug.id != action.payload.id);
+    },
+  },
+});
+
+export const { bugAdded, bugRemoved, bugResolved, bugUpdated } = slice.actions;
+
+export default slice.reducer;
 
 //Action Creators
-export const bugUpdated = createAction("bugUpdated");
 
-export const bugAdded = createAction("bugAdded");
+////Creating Action Using createAction Function
+// export const bugUpdated = createAction("bugUpdated");
 
-export const bugRemoved = createAction("bugRemoved");
+// export const bugAdded = createAction("bugAdded");
 
-export const bugResolved = createAction("bugResolved");
+// export const bugRemoved = createAction("bugRemoved");
 
+// export const bugResolved = createAction("bugResolved");
+
+//Creating Action manually
 // export const bugAdded = (description) => ({
 //   type: BUG_ADDED,
 //   payload: {
@@ -30,34 +67,59 @@ export const bugResolved = createAction("bugResolved");
 //   },
 // });
 
-//Resucer
-let lastId = 0;
+//Reducer
 
-export default function reducer(state = [], action) {
-  switch (action.type) {
-    case bugAdded.type:
-      return [
-        ...state,
-        {
-          id: ++lastId,
-          description: action.payload.description,
-          resolved: false,
-        },
-      ];
-    case bugRemoved.type:
-      return state.filter((bug) => bug.id !== action.payload.id);
+//// Creating Reducer using createreducer function
+// export default createReducer([], {
+//   bugAdded: (bugs, action) => {
+//     bugs.push({
+//       id: ++lastId,
+//       description: action.payload.description,
+//       resolved: false,
+//     });
+//   },
 
-    case bugResolved.type:
-      return state.map((bug) =>
-        bug.id === action.payload.id ? { ...bug, resolved: true } : bug
-      );
+//   bugResolved: (bugs, action) => {
+//     const index = bugs.findIndex((bug) => bug.id === action.payload.id);
+//     bugs[index].resolved = true;
+//   },
 
-    case bugUpdated.type:
-      return state.map((bug) =>
-        bug.id === action.payload.id ? { ...bug, Updated: true } : bug
-      );
+//   bugUpdated: (bugs, action) => {
+//     const index = bugs.findIndex((bug) => bug.id === action.payload.id);
+//     bugs[index].updated = true;
+//   },
 
-    default:
-      return state;
-  }
-}
+//   bugRemoved: (bugs, action) => {
+//     bugs.pop((bug) => bug.id != action.payload.id);
+//   },
+// });
+
+//// Manually creating Reducer
+// export default function reducer(state = [], action) {
+//   switch (action.type) {
+//     case bugAdded.type:
+//       return [
+//         ...state,
+//         {
+//           id: ++lastId,
+//           description: action.payload.description,
+//           resolved: false,
+//         },
+//       ];
+//     case bugRemoved.type:
+//       return state.filter((bug) => bug.id !== action.payload.id);
+
+//     case bugResolved.type:
+//       return state.map((bug) =>
+//         bug.id === action.payload.id ? { ...bug, resolved: true } : bug
+//       );
+
+//     case bugUpdated.type:
+//       return state.map((bug) =>
+//         bug.id === action.payload.id ? { ...bug, updated: true } : bug
+//       );
+
+//     default:
+//       return state;
+//   }
+// }
