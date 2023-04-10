@@ -25,7 +25,8 @@ const slice = createSlice({
     },
 
     bugRemoved: (bugs, action) => {
-      bugs.pop((bug) => bug.id != action.payload.id);
+      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
+      bugs.splice(index, 1);
     },
   },
 });
