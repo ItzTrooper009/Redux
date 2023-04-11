@@ -76,5 +76,3 @@ console.log(bugs);
 // const y = getUnresolvedBugs(store.getState());
 // console.log("X-", x, "    Y-", y);
 // console.log(x === y);
-
-// store.dispatch(actions.bugAdded("bug 1"));
