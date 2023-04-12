@@ -3,7 +3,7 @@
 // // import * as act from "./actions";
 // // import store from "./store/configStore";
 import configStore from "./store/configStore";
-import toast from "./store/middleware/toast";
+import * as actions from "./store/api";
 // import {
 //   bugAdded,
 //   bugRemoved,
@@ -79,14 +79,38 @@ import toast from "./store/middleware/toast";
 // // console.log(x === y);
 
 //Using Middleware
-const store = configStore();
+// const store = configStore();
 // store.dispatch((dispatch, getState) => {
 //   dispatch({ type: "bugsReceived", bugs: [1, 2, 3, 4] });
-//   //   console.log(getState());
+//   console.log("Function", getState());
 // });
 
-store.dispatch({
-  type: "error",
-  payload: { message: "An Error Occured" },
-});
-// console.log(store.getState());
+// store.dispatch({
+//   type: "error",
+//   payload: { message: "An Error Occured" },
+// });
+// console.log("Error", store.getState());
+
+//API Call
+
+const store = configStore();
+
+store.dispatch(
+  actions.apiCallBegan({
+    url: "/bugs",
+    method: "get",
+    data: {},
+    onSuccess: "bugsReceived",
+  })
+);
+
+// store.dispatch({
+//   type: "apiCallBegan",
+//   payload: {
+//     url: "/bugs",
+//     method: "get",
+//     data: {},
+//     onSuccess: "bugsReaceived",
+//     onError: "apiRequestFailed",
+//   },
+// });
