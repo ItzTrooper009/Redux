@@ -101,6 +101,7 @@ store.dispatch(
     method: "get",
     data: {},
     onSuccess: "bugsReceived",
+    onError: "errorReceived",
   })
 );
 
