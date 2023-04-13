@@ -4,6 +4,7 @@
 // // import store from "./store/configStore";
 import configStore from "./store/configStore";
 import * as actions from "./store/api";
+import { loadBugs } from "./store/bugs";
 // import {
 //   bugAdded,
 //   bugRemoved,
@@ -95,16 +96,14 @@ import * as actions from "./store/api";
 
 const store = configStore();
 
-store.dispatch(
-  actions.apiCallBegan({
-    url: "/bugs",
-    method: "get",
-    data: {},
-    onSuccess: "bugsReceived",
-    onError: "errorReceived",
-  })
-);
+console.log(store.getState());
 
+store.dispatch(loadBugs());
+
+console.log(store.getState().entities.bugs.list);
+setTimeout(() => {
+  console.log(store.getState().entities.bugs.list);
+}, 2000);
 // store.dispatch({
 //   type: "apiCallBegan",
 //   payload: {

@@ -1,39 +1,54 @@
 import { createAction, createReducer, createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
+import * as actions from "../store/api";
 
 let lastId = 0;
 
 const slice = createSlice({
   name: "bugs",
-  initialState: [],
+  initialState: {
+    list: [],
+    loading: false,
+    lastFetch: null,
+  },
   reducers: {
-    busAssignedToUser: (bugs, action) => {
-      const { bugId, userId } = action.payload;
-      const index = bugs.findIndex((bug) => bug.id === bugId);
-      bugs[index].userId = userId;
+    bugsRequested: (bugs, action) => {
+      bugs.loading = true;
     },
-
+    bugsRequestFailed: (bugs, action) => {
+      bugs.loading = false;
+    },
+    bugsReceived: (bugs, action) => {
+      bugs.list = action.payload;
+      bugs.loading = false;
+    },
     bugAdded: (bugs, action) => {
-      bugs.push({
+      bugs.list.push({
         id: ++lastId,
         description: action.payload.description,
         resolved: false,
       });
     },
 
-    bugResolved: (bugs, action) => {
+    bugRemoved: (bugs, action) => {
       const index = bugs.findIndex((bug) => bug.id === action.payload.id);
-      bugs[index].resolved = true;
+      bugs.list.splice(index, 1);
+    },
+
+    busAssignedToUser: (bugs, action) => {
+      const { bugId, userId } = action.payload;
+      const index = bugs.list.findIndex((bug) => bug.id === bugId);
+      bugs.list[index].userId = userId;
+    },
+
+    bugResolved: (bugs, action) => {
+      const index = bugs.list.findIndex((bug) => bug.id === action.payload.id);
+      bugs.list[index].resolved = true;
     },
 
     bugUpdated: (bugs, action) => {
-      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
-      bugs[index].updated = true;
-    },
-
-    bugRemoved: (bugs, action) => {
-      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
-      bugs.splice(index, 1);
+      const index = bugs.list.findIndex((bug) => bug.id === action.payload.id);
+      bugs.list[index].updated = true;
     },
   },
 });
@@ -59,9 +74,22 @@ export const {
   bugResolved,
   bugUpdated,
   busAssignedToUser,
+  bugsReceived,
+  bugsRequested,
+  bugsRequestFailed,
 } = slice.actions;
 
 export default slice.reducer;
+
+const url = "/bugs";
+export const loadBugs = () => {
+  return actions.apiCallBegan({
+    url,
+    onStart: bugsRequested.type,
+    onSuccess: bugsReceived.type,
+    onError: bugsRequestFailed.type,
+  });
+};
 
 //Action Creators
 
