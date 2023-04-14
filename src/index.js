@@ -96,14 +96,13 @@ import { loadBugs } from "./store/bugs";
 
 const store = configStore();
 
-console.log(store.getState());
+// store.dispatch(loadBugs(store));
 
-store.dispatch(loadBugs());
+loadBugs(store);
 
-console.log(store.getState().entities.bugs.list);
 setTimeout(() => {
-  console.log(store.getState().entities.bugs.list);
-}, 2000);
+  loadBugs(store);
+}, 5000);
 // store.dispatch({
 //   type: "apiCallBegan",
 //   payload: {
