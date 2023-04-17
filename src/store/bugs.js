@@ -66,7 +66,7 @@ export const getBugsByUser = (userId) =>
     (bugs) => bugs.filter((bug) => bug.userId === userId)
   );
 
-const {
+export const {
   bugAdded,
   bugRemoved,
   bugResolved,

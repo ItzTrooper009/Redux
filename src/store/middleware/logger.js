@@ -1,5 +1,7 @@
 const logger = (param) => (store) => (next) => (action) => {
-  console.log("Parameter-", param);
+  console.log("Parameter-", store.getState().entities.bugs.list);
+  // setTimeout(() => {
+  // }, 3000);
   {
     param.destination === "console" && next(action);
   }
