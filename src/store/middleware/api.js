@@ -9,7 +9,7 @@ const api =
 
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
 
-    dispatch({ type: onStart });
+    onStart && dispatch({ type: onStart });
 
     next(action);
 

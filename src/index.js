@@ -4,7 +4,7 @@
 // // import store from "./store/configStore";
 import configStore from "./store/configStore";
 import * as actions from "./store/api";
-import { loadBugs } from "./store/bugs";
+import { addBug, loadBugs, resolveBug, assignUserId } from "./store/bugs";
 // import {
 //   bugAdded,
 //   bugRemoved,
@@ -96,13 +96,14 @@ import { loadBugs } from "./store/bugs";
 
 const store = configStore();
 
-// store.dispatch(loadBugs(store));
-
 loadBugs(store);
 
-setTimeout(() => {
-  loadBugs(store);
-}, 5000);
+setTimeout(() => store.dispatch(assignUserId(2, 8)), 2000);
+// store.dispatch(addBug({ description: "New bug added" }));
+// setTimeout(() => store.dispatch(resolveBug(3)));
+// setTimeout(() => {
+//   loadBugs(store);
+// }, 5000);
 // store.dispatch({
 //   type: "apiCallBegan",
 //   payload: {
