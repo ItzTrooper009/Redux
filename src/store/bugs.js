@@ -57,7 +57,8 @@ const slice = createSlice({
 // Memoization
 export const getUnresolvedBugs = createSelector(
   (state) => state.entities.bugs,
-  (bugs) => bugs.filter((bug) => !bug.resolved)
+  (state) => state.entities.projects,
+  (bugs, projects) => bugs.list.filter((bug) => !bug.resolved)
 );
 
 export const getBugsByUser = (userId) =>
@@ -81,21 +82,20 @@ export default slice.reducer;
 
 const url = "/bugs";
 
-export const loadBugs = ({ dispatch, getState }) => {
+export const loadBugs = () => (dispatch, getState) => {
   const { lastFetch } = getState().entities.bugs;
-  console.log(lastFetch);
+
   const diffInMinutes = moment().diff(moment(lastFetch), "seconds");
-  console.log(diffInMinutes);
-  if (!diffInMinutes || diffInMinutes <= 3) {
-    dispatch(
-      apiCallBegan({
-        url,
-        onStart: bugsRequested.type,
-        onSuccess: bugsReceived.type,
-        onError: bugsRequestFailed.type,
-      })
-    );
-  }
+  if (diffInMinutes < 10) return;
+
+  return dispatch(
+    apiCallBegan({
+      url,
+      onStart: bugsRequested.type,
+      onSuccess: bugsReceived.type,
+      onError: bugsRequestFailed.type,
+    })
+  );
 };
 export const addBug = (bug) =>
   apiCallBegan({

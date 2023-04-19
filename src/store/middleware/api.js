@@ -50,6 +50,7 @@ const api =
     //     dispatch(actions.apiCallFailed(err.message));
     //     if (onError) dispatch({ type: onError, payload: err.message });
     //   });
+    // return next(action);
   };
 
 export default api;

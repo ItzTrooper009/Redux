@@ -10,8 +10,8 @@ export default function configStore() {
     reducer,
     middleware: [
       ...getDefaultMiddleware(),
-      // logger({ destination: "console" }),
-      // toast,
+      logger({ destination: "console" }),
+      toast,
       api,
     ],
   });

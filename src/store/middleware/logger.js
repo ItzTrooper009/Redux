@@ -1,10 +1,10 @@
 const logger = (param) => (store) => (next) => (action) => {
-  console.log("Parameter-", store.getState().entities.bugs.list);
+  // console.log("Parameter-", param);
   // setTimeout(() => {
   // }, 3000);
-  {
-    param.destination === "console" && next(action);
-  }
+
+  return next(action);
+
   // if (typeof action === "function") {
   //   action();
   // } else next(action);

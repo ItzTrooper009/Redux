@@ -5,6 +5,7 @@
 import configStore from "./store/configStore";
 import * as actions from "./store/api";
 import { addBug, loadBugs, resolveBug, assignUserId } from "./store/bugs";
+import { months, parseTwoDigitYear } from "moment";
 // import {
 //   bugAdded,
 //   bugRemoved,
@@ -93,12 +94,14 @@ import { addBug, loadBugs, resolveBug, assignUserId } from "./store/bugs";
 // console.log("Error", store.getState());
 
 //API Call
-
+// const date = new Date();
+// const day = date.getDate();
+// console.log(`${day}`);
 const store = configStore();
 
-loadBugs(store);
+store.dispatch(loadBugs());
 
-setTimeout(() => store.dispatch(assignUserId(2, 8)), 2000);
+setTimeout(() => store.dispatch(loadBugs()), 20000);
 // store.dispatch(addBug({ description: "New bug added" }));
 // setTimeout(() => store.dispatch(resolveBug(3)));
 // setTimeout(() => {
